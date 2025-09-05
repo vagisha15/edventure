@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Edventure | AI Teaching OS</title>
+  <meta name="description" content="Edventure is an AI teaching OS that generates course pages, materials, assignments, and grades with LMS integration." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0d10;
+      --panel: #12161b;
+      --text: #e6e9ef;
+      --muted: #9aa4b2;
+      --accent: #7c5cff; /* purple */
+      --accent-2: #2dd4bf; /* cyan */
+      --accent-3: #fb5ab0; /* pink */
+      --radius: 18px;
+      --shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      background: radial-gradient(1200px 600px at 10% 0%, rgba(124,92,255,0.18), transparent),
+                  radial-gradient(900px 500px at 90% -10%, rgba(45,212,191,0.14), transparent),
+                  var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+    }
+    header { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); background: rgba(11,13,16,0.6); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 16px 20px; }
+    nav { display: flex; align-items: center; justify-content: space-between; }
+    .brand { font-weight: 800; letter-spacing: -0.02em; }
+    .brand a { color: var(--text); text-decoration: none; }
+    .links a { color: var(--muted); margin-left: 18px; text-decoration: none; font-weight: 500; }
+    .links a:hover { color: var(--text); }
+
+    .hero { padding: 80px 20px 40px; text-align: center; }
+    .hero h1 { font-size: clamp(36px, 6vw, 56px); line-height: 1.1; margin: 0 0 10px; letter-spacing: -0.02em; }
+    .hero p { max-width: 820px; margin: 10px auto 24px; color: var(--muted); font-size: clamp(16px, 2.2vw, 20px); }
+    .cta { display: inline-flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .btn { appearance: none; border: 0; padding: 12px 18px; font-weight: 600; cursor: pointer; border-radius: 999px; }
+    .btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #0b0d10; box-shadow: var(--shadow); }
+    .btn.ghost { background: transparent; color: var(--text); border: 1px solid rgba(255,255,255,0.15); }
+    .btn.alt { background: linear-gradient(135deg, var(--accent-3), var(--accent)); color: #0b0d10; box-shadow: var(--shadow); }
+    .btn:hover { transform: translateY(-1px); }
+
+    section { padding: 50px 20px; }
+    .panel { background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius); box-shadow: var(--shadow); }
+    .grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 20px; }
+
+    /* Generic cards */
+    .card { padding: 22px; border-radius: var(--radius); background: var(--panel); border: 1px solid rgba(255,255,255,0.06); }
+    .card h3 { margin: 0 0 6px; font-size: 20px; }
+    .card p { margin: 0; color: var(--muted); }
+    .list { margin: 10px 0 0; padding-left: 18px; color: var(--muted); }
+    .list li { margin: 6px 0; }
+
+    /* Section specific */
+    #what .panel, #why .panel, #features .panel, #access .panel { padding: 28px; }
+
+    .kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 16px; }
+    .kpis .k { background: rgba(124,92,255,0.12); border: 1px solid rgba(124,92,255,0.25); padding: 14px; border-radius: 12px; text-align: center; }
+    .kpis .k small { color: var(--muted); display: block; }
+
+    .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .feature-grid .card ul { margin-top: 8px; }
+
+    .tag { display: inline-block; font-size: 12px; padding: 4px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.15); color: var(--muted); }
+
+    /* Access form */
+    form { display: grid; gap: 12px; }
+    label { font-weight: 600; font-size: 14px; }
+    input, select, textarea { width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15); background: #0e1116; color: var(--text); }
+    textarea { min-height: 110px; }
+    .inline { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .helper { color: var(--muted); font-size: 13px; }
+
+    footer { padding: 32px 20px 60px; text-align: center; color: var(--muted); }
+
+    @media (max-width: 900px) {
+      .feature-grid { grid-template-columns: 1fr; }
+      .kpis { grid-template-columns: 1fr; }
+      .inline { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap">
+      <nav>
+        <div class="brand"><a href="#top">Edventure</a></div>
+        <div class="links">
+          <a href="#what">What</a>
+          <a href="#why">Why</a>
+          <a href="#features">Features</a>
+          <a href="#access">Access</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <h1>AI that builds your course and assessments, end to end</h1>
+      <p>Edventure generates complete course pages, week-by-week plans, materials, assignments, and grading workflows. Connect to your LMS with LTI 1.3, export in native formats, and keep everything versioned and auditable.</p>
+      <div class="cta">
+        <a class="btn primary" href="#access">Request access</a>
+        <a class="btn ghost" href="#features">See features</a>
+      </div>
+      <p class="helper">For instructors, program directors, and departments that want speed and quality at the same time.</p>
+    </section>
+
+    <section id="what">
+      <div class="wrap">
+        <div class="panel">
+          <h2>What is Edventure?</h2>
+          <p>Edventure is an AI teaching OS that turns goals into usable courses. Start with outcomes and constraints, then generate a full course shell that includes syllabus, weekly plan, materials, assignments, and grading. Iterate, compare versions, and export to your LMS in a few clicks.</p>
+          <div class="kpis">
+            <div class="k"><strong>10x</strong><small>faster course bootstrapping</small></div>
+            <div class="k"><strong>1-click</strong><small>export to LMS formats</small></div>
+            <div class="k"><strong>Versioning</strong><small>compare and rollback anytime</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="why">
+      <div class="wrap">
+        <div class="panel">
+          <h2>Why are we building this?</h2>
+          <p>Faculty want less busywork and more teaching time. Building a quality course takes weeks. Gathering materials, writing assignments, mapping outcomes, and formatting for each LMS creates constant friction. Edventure reduces the setup load and keeps instructors in control with clear version history and export paths.</p>
+          <div class="card" style="margin-top:16px;">
+            <h3>Survey highlights</h3>
+            <p class="helper">Add your faculty survey findings here. You can paste bullets or a short chart. Example placeholders to replace:</p>
+            <ul class="list">
+              <li><em>Replace me:</em> X percent of faculty spend more than Y hours per course on setup.</li>
+              <li><em>Replace me:</em> Biggest pain points are assignment creation, outcome mapping, and quiz formatting.</li>
+              <li><em>Replace me:</em> Top requested features include version control, rubric templates, and LMS grade sync.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <div class="panel">
+          <h2>What we provide</h2>
+          <div class="feature-grid" style="margin-top:12px;">
+            <div class="card">
+              <span class="tag">Course and syllabus generation</span>
+              <ul class="list">
+                <li>One-click course outline from goals, level, and term length</li>
+                <li>Week-by-week plan with outcomes, readings, labs, and pacing</li>
+                <li>Prerequisite mapping and dependency checks to prevent illogical sequencing</li>
+                <li>Multiple versions with compare and rollback</li>
+                <li>Import from existing syllabus, PDFs, or LMS course shells</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="tag">Learning materials and assignments</span>
+              <ul class="list">
+                <li>Lecture outlines, reading lists, lab briefs, starter code, datasets</li>
+                <li>Assignment generator from topics or outcomes</li>
+                <li>Rubrics and grading guides auto-generated from prompts</li>
+                <li>Blueprint mapping from tasks to outcomes and topics</li>
+                <li>Import existing banks, de-duplicate, tag, and version</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="tag">Quiz and paper builder</span>
+              <ul class="list">
+                <li>Quiz builder with MCQ, short answer, numeric, coding, and graphs</li>
+                <li>Difficulty tagging, Bloom's level tagging, randomization, question pools</li>
+                <li>Drag-and-drop question paper builder</li>
+                <li>Sectioning, marks allocation, negative marking</li>
+                <li>Export to PDF, DOCX, and LMS quiz formats</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="tag">Grading and feedback</span>
+              <ul class="list">
+                <li>Auto-grading for MCQ, numeric, and code with test cases</li>
+                <li>AI-assisted rubric scoring for short answers</li>
+                <li>Plagiarism and similarity checks</li>
+                <li>Regrade request workflow and comment suggestions</li>
+                <li>Gradebook sync via LTI Assignment and Grade Services</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="tag">Integrations and exports</span>
+              <ul class="list">
+                <li>LTI 1.3 adapters for Canvas, Moodle, Blackboard, Brightspace, and Schoology</li>
+                <li>One-click export to LMS quiz banks and course shells</li>
+                <li>Download as PDF and DOCX</li>
+                <li>APIs for roster, grade sync, and analytics</li>
+                <li>Security-first approach with clear audit trails</li>
+              </ul>
+            </div>
+            <div class="card">
+              <span class="tag">For departments</span>
+              <ul class="list">
+                <li>Template libraries for outcomes, rubrics, and course structures</li>
+                <li>Program-level alignment views and coverage checks</li>
+                <li>Version review and approvals</li>
+                <li>Usage analytics for continuous improvement</li>
+                <li>SSO and role-based access</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="access">
+      <div class="wrap">
+        <div class="panel">
+          <h2>How to access</h2>
+          <p>We are onboarding instructors and departments in small batches. Share a few details, and we will reach out with a link and next steps.</p>
+
+          <form id="lead-form">
+            <div class="inline">
+              <div>
+                <label for="name">Full name</label>
+                <input id="name" name="name" placeholder="Jane Doe" required />
+              </div>
+              <div>
+                <label for="email">Work email</label>
+                <input id="email" name="email" type="email" placeholder="jane@university.edu" required />
+              </div>
+            </div>
+            <div class="inline">
+              <div>
+                <label for="role">Role</label>
+                <select id="role" name="role" required>
+                  <option value="">Select</option>
+                  <option>Instructor</option>
+                  <option>Program director</option>
+                  <option>Department admin</option>
+                  <option>Teaching assistant</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label for="institution">Institution</label>
+                <input id="institution" name="institution" placeholder="Carnegie Mellon University" required />
+              </div>
+            </div>
+            <div class="inline">
+              <div>
+                <label for="lms">Primary LMS</label>
+                <select id="lms" name="lms" required>
+                  <option value="">Select</option>
+                  <option>Canvas</option>
+                  <option>Moodle</option>
+                  <option>Blackboard</option>
+                  <option>Brightspace</option>
+                  <option>Schoology</option>
+                  <option>Other</option>
+                </select>
+              </div>
+              <div>
+                <label for="courses">Courses per term</label>
+                <input id="courses" name="courses" type="number" min="0" placeholder="2" />
+              </div>
+            </div>
+            <div>
+              <label for="notes">Anything else we should know?</label>
+              <textarea id="notes" name="notes" placeholder="Share goals, constraints, or timelines"></textarea>
+            </div>
+            <div>
+              <label style="display:flex;align-items:center;gap:8px;">
+                <input type="checkbox" id="consent" required />
+                I agree to be contacted about Edventure.
+              </label>
+              <p class="helper">We respect privacy. We only use your info to contact you about access.</p>
+            </div>
+            <div class="cta">
+              <button class="btn alt" type="submit">Request access</button>
+              <a class="btn ghost" href="https://forms.gle/YOUR_FORM_ID" target="_blank" rel="noreferrer">Use Google Form</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <small>© <span id="y"></span> Edventure. All rights reserved.</small>
+  </footer>
+
+  <script>
+    // Current year and smooth anchor scroll
+    document.getElementById('y').textContent = new Date().getFullYear();
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const href = a.getAttribute('href');
+        if (href.length > 1) {
+          e.preventDefault();
+          document.querySelector(href).scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // Lead form mailto fallback. Replace recipientEmail with your address.
+    const recipientEmail = 'team@edventure.app'; // change this to your email
+    const form = document.getElementById('lead-form');
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form).entries());
+      const subject = encodeURIComponent('Edventure access request');
+      const body = encodeURIComponent(
+        `Name: ${data.name || ''}
+` +
+        `Email: ${data.email || ''}
+` +
+        `Role: ${data.role || ''}
+` +
+        `Institution: ${data.institution || ''}
+` +
+        `LMS: ${data.lms || ''}
+` +
+        `Courses per term: ${data.courses || ''}
+` +
+        `Notes: ${data.notes || ''}`
+      );
+      window.location.href = `mailto:${recipientEmail}?subject=${subject}&body=${body}`;
+    });
+  </script>
+</body>
+</html>
